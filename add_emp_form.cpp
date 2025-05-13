@@ -7,6 +7,7 @@
 #include <QDateEdit>
 #include <iostream>
 #include "add_emp_form.h"
+#include "EmployeeListDialog.h"
 
 AddEmployeeForm::AddEmployeeForm(QWidget* parent) : QWidget(parent)
 {
@@ -35,23 +36,31 @@ AddEmployeeForm::AddEmployeeForm(QWidget* parent) : QWidget(parent)
 
 void AddEmployeeForm::saveEmployee()
 {
+    // Validate input fields
+    if (nameEdit->text().isEmpty() || idEdit->text().isEmpty() || deptEdit->text().isEmpty() || salaryEdit->text().isEmpty()) {
+        QMessageBox::warning(this, "Input Error", "All fields must be filled!");
+        return;
+    }
+
     Employee emp;
     emp.name = nameEdit->text();
     emp.id = idEdit->text();
     emp.department = deptEdit->text();
     emp.salary = salaryEdit->text();
 
-    employeeList.push_back(emp); // store in vector
+    employeeList.push_back(emp); // Store in vector
 
     QMessageBox::information(this, "Saved", "Employee Data Saved!");
 
-    // Debug print
-    std::cout << "Employees so far:\n";
+    // Convert std::vector to QVector
+    QVector<Employee> employeeQVector;
     for (const auto& e : employeeList) {
-        std::cout << "Name: " << e.name.toStdString()
-                  << ", ID: " << e.id.toStdString()
-                  << ", Dept: " << e.department.toStdString()
-                  << ", Salary: " << e.salary.toStdString() << "\n";
+        employeeQVector.push_back(e); // Add each employee to QVector
     }
+
+    // Create and show the Employee List Dialog
+    EmployeeListDialog* employeeListDialog = new EmployeeListDialog(this);
+    employeeListDialog->setEmployeeList(employeeQVector);  // Now passing QVector<Employee> instead
+    employeeListDialog->exec();
 }
 

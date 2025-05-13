@@ -9,7 +9,7 @@
 void qt_window(QWidget& wd)
 {
     wd.setFixedSize(500, 500);
-    wd.setWindowIcon(QIcon("/home/shakir-salam/Documents/proj/emp_ms/icon.png"));
+    wd.setWindowIcon(QIcon("/home/shakir-salam/Documents/proj/e-m-s/icon.png"));
     wd.setWindowTitle("EMS");
 }
 
