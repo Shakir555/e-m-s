@@ -35,14 +35,23 @@ AddEmployeeForm::AddEmployeeForm(QWidget* parent) : QWidget(parent)
 
 void AddEmployeeForm::saveEmployee()
 {
-    QString info = QString(
-        "Name: %1\nID: %2\nDept: %3\nRole: %4\nSalary: %5\nJoin: %6\nEnd: %7")
-        .arg(nameEdit->text())
-        .arg(idEdit->text())
-        .arg(deptEdit->text())
-        .arg(salaryEdit->text());
-    QMessageBox::information(this, "Saved", "Employee Data Saved!");
-    std::cout << info.toStdString() << std::endl;
-}
+    Employee emp;
+    emp.name = nameEdit->text();
+    emp.id = idEdit->text();
+    emp.department = deptEdit->text();
+    emp.salary = salaryEdit->text();
 
+    employeeList.push_back(emp); // store in vector
+
+    QMessageBox::information(this, "Saved", "Employee Data Saved!");
+
+    // Debug print
+    std::cout << "Employees so far:\n";
+    for (const auto& e : employeeList) {
+        std::cout << "Name: " << e.name.toStdString()
+                  << ", ID: " << e.id.toStdString()
+                  << ", Dept: " << e.department.toStdString()
+                  << ", Salary: " << e.salary.toStdString() << "\n";
+    }
+}
 

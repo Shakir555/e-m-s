@@ -2,6 +2,8 @@
 #define ADD_EMP_FORM_H
 
 #include <QWidget>
+#include <vector>
+#include "emp.h"
 
 class QLineEdit;
 class QDateEdit;
@@ -17,11 +19,9 @@ private slots:
 private:
     QLineEdit* nameEdit;
     QLineEdit* idEdit;
-    QLineEdit* deptEdit; 
-    QLineEdit* roleEdit;
+    QLineEdit* deptEdit;
     QLineEdit* salaryEdit;
-    QLineEdit* joinDateEdit;
-    QLineEdit* endDateEdit;
     QPushButton* saveBtn;
+    std::vector<Employee>employeeList;
 };
 #endif
