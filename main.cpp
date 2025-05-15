@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QIcon>
 #include <QFont>
+#include <QScreen>
 #include <iostream>
 
 #include "add_emp_form.h"
@@ -10,11 +11,10 @@
 
 std::vector<Employee> globalEmployeeList;
 
-// Function to initialize main window
+// Function to initialize main window to follow desktop screen size
 void qt_window(QWidget& wd)
 {
-    wd.setFixedSize(500, 500);
-    wd.setWindowIcon(QIcon("/home/shakir-salam/Documents/proj/e-m-s/resource/icon.png"));
+    wd.setWindowIcon(QIcon("/home/shakir-salam/Documents/proj/e-m-s/resource/icon/icon.png"));
     wd.setWindowTitle("EMS");
 }
 
@@ -43,23 +43,23 @@ void viewEmployeeClicked()
 void all_emp_btn(QWidget& wd)
 {
     QPushButton* addButton = new QPushButton("Add Employee", &wd);
-    addButton->setGeometry(50, 50, 150, 40);
+    addButton->setGeometry(1100, 300, 200, 100);
 
     QObject::connect(addButton, &QPushButton::clicked, []() {
-    onAddEmployeeClicked();  // ✅ keep this
-    });
-
-    QPushButton* viewButton = new QPushButton("View Employees", &wd);
-    viewButton->setGeometry(50, 200, 150, 40);
-    QObject::connect(viewButton, &QPushButton::clicked, []() {
-    viewEmployeeClicked();
+    onAddEmployeeClicked();  
     });
 
     QPushButton* editButton = new QPushButton("Edit Employee", &wd);
-    editButton->setGeometry(50, 100, 150, 40);
+    editButton->setGeometry(1100, 400, 200, 100);
 
     QPushButton* deleteButton = new QPushButton("Delete Employee", &wd);
-    deleteButton->setGeometry(50, 150, 150, 40);
+    deleteButton->setGeometry(1100, 500, 200, 100);
+
+    QPushButton* viewButton = new QPushButton("View Employees", &wd);
+    viewButton->setGeometry(1100, 600, 200, 100);
+    QObject::connect(viewButton, &QPushButton::clicked, []() {
+    viewEmployeeClicked();
+    });
 }
 
 int main(int argc, char *argv[])
@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
     qt_window(wd);
     all_emp_btn(wd);
 
-    wd.show();
+    wd.showFullScreen();
+
     return application.exec();
 }

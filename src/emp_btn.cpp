@@ -11,7 +11,7 @@ void add_emp_btn(QWidget& wd)
     add_emp_btn->setText("Add Employee");
     add_emp_btn->setToolTip("Create an employee details");
     add_emp_btn->setFont(QFont("Bold", 12, 1));
-    add_emp_btn->setGeometry(10, 10, 280, 30);
+    add_emp_btn->setGeometry(10, 30, 280, 30);
     QObject::connect(add_emp_btn, &QPushButton::clicked, [&](){
         AddEmployeeForm* form = new AddEmployeeForm(&wd);
         form->show();
@@ -37,4 +37,14 @@ void del_emp_btn(QWidget& wd)
     del_emp_btn->setFont(QFont("Bold", 12, 1));
     del_emp_btn->setGeometry(10, 90, 280, 30);
     std::cout << "delete employee button init" << std::endl;
+}
+
+void view_emp_btn(QWidget& wd)
+{
+    QPushButton* view_emp_btn = new QPushButton("View Employee", &wd);
+    view_emp_btn->setText("View Employee");
+    view_emp_btn->setToolTip("View employee list");
+    view_emp_btn->setFont(QFont("Bold", 12, 1));
+    view_emp_btn->setGeometry(10, 120, 280, 30);
+    std::cout << "view employee button init" << std::endl;
 }

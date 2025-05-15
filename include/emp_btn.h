@@ -6,6 +6,7 @@
 void add_emp_btn(QWidget& wd);
 void edit_emp_btn(QWidget& wd);
 void del_emp_btn(QWidget& wd);
+void view_emp_btn(QWidget& wd);
 
 #endif
 
