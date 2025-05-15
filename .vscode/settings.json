@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "qmessagebox": "cpp",
+        "qformlayout": "cpp"
+    }
+}

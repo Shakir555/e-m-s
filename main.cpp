@@ -4,9 +4,12 @@
 #include <QIcon>
 #include <QFont>
 #include <QScreen>
+#include <QMessageBox>
 #include <iostream>
 
 #include "add_emp_form.h"
+#include "login_dialog.h"
+#include "EmployeeListDialog.h"
 
 
 std::vector<Employee> globalEmployeeList;
@@ -36,6 +39,24 @@ void viewEmployeeClicked()
     EmployeeListDialog* dialog = new EmployeeListDialog(nullptr);
     dialog->setEmployeeList(employeeQVector);
     dialog->exec();
+}
+
+// Function to add buttons to main window
+void admin_button(QWidget& wd)
+{
+    /// Login button on the left
+    QPushButton* loginButton = new QPushButton("Admin Login", &wd);
+    loginButton->setGeometry(100, 300, 200, 100);  // Position on left side
+
+    QObject::connect(loginButton, &QPushButton::clicked, [&wd]() {
+        LoginDialog loginDialog(&wd);
+        if (loginDialog.exec() == QDialog::Accepted) {
+            if (loginDialog.isAuthenticated()) {
+                QMessageBox::information(&wd, "Success", "Admin logged in!");
+                // TODO: enable admin-only features here
+            }
+        }
+    });
 }
 
 
@@ -68,8 +89,8 @@ int main(int argc, char *argv[])
     QWidget wd;
 
     qt_window(wd);
+    admin_button(wd);
     all_emp_btn(wd);
-
     wd.showFullScreen();
 
     return application.exec();

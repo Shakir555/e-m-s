@@ -55,14 +55,18 @@ OBJECTS_DIR   = o/
 SOURCES       = main.cpp \
 		src/emp_btn.cpp \
 		src/add_emp_form.cpp \
-		src/EmployeeListDialog.cpp moc/moc_add_emp_form.cpp \
-		moc/moc_EmployeeListDialog.cpp
+		src/EmployeeListDialog.cpp \
+		src/login_dialog.cpp moc/moc_add_emp_form.cpp \
+		moc/moc_EmployeeListDialog.cpp \
+		moc/moc_login_dialog.cpp
 OBJECTS       = o/main.o \
 		o/emp_btn.o \
 		o/add_emp_form.o \
 		o/EmployeeListDialog.o \
+		o/login_dialog.o \
 		o/moc_add_emp_form.o \
-		o/moc_EmployeeListDialog.o
+		o/moc_EmployeeListDialog.o \
+		o/moc_login_dialog.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -144,10 +148,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		hello_world.pro include/emp_btn.h \
 		include/add_emp_form.h \
 		include/EmployeeListDialog.h \
-		include/emp.h main.cpp \
+		include/emp.h \
+		include/login_dialog.h main.cpp \
 		src/emp_btn.cpp \
 		src/add_emp_form.cpp \
-		src/EmployeeListDialog.cpp
+		src/EmployeeListDialog.cpp \
+		src/login_dialog.cpp
 QMAKE_TARGET  = hello_world
 DESTDIR       = 
 TARGET        = hello_world
@@ -333,8 +339,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/emp_btn.h include/add_emp_form.h include/EmployeeListDialog.h include/emp.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp src/emp_btn.cpp src/add_emp_form.cpp src/EmployeeListDialog.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/emp_btn.h include/add_emp_form.h include/EmployeeListDialog.h include/emp.h include/login_dialog.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp src/emp_btn.cpp src/add_emp_form.cpp src/EmployeeListDialog.cpp src/login_dialog.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -366,9 +372,9 @@ compiler_moc_predefs_clean:
 moc/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc/moc_add_emp_form.cpp moc/moc_EmployeeListDialog.cpp
+compiler_moc_header_make_all: moc/moc_add_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_login_dialog.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc/moc_add_emp_form.cpp moc/moc_EmployeeListDialog.cpp
+	-$(DEL_FILE) moc/moc_add_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_login_dialog.cpp
 moc/moc_add_emp_form.cpp: include/add_emp_form.h \
 		include/EmployeeListDialog.h \
 		include/emp.h \
@@ -381,6 +387,11 @@ moc/moc_EmployeeListDialog.cpp: include/EmployeeListDialog.h \
 		moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/shakir-salam/Documents/proj/e-m-s/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/shakir-salam/Documents/proj/e-m-s -I/home/shakir-salam/Documents/proj/e-m-s/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include include/EmployeeListDialog.h -o moc/moc_EmployeeListDialog.cpp
+
+moc/moc_login_dialog.cpp: include/login_dialog.h \
+		moc/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/shakir-salam/Documents/proj/e-m-s/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/shakir-salam/Documents/proj/e-m-s -I/home/shakir-salam/Documents/proj/e-m-s/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include include/login_dialog.h -o moc/moc_login_dialog.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -400,7 +411,8 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 o/main.o: main.cpp include/add_emp_form.h \
 		include/EmployeeListDialog.h \
-		include/emp.h
+		include/emp.h \
+		include/login_dialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/main.o main.cpp
 
 o/emp_btn.o: src/emp_btn.cpp include/emp_btn.h \
@@ -418,11 +430,17 @@ o/EmployeeListDialog.o: src/EmployeeListDialog.cpp include/EmployeeListDialog.h 
 		include/emp.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/EmployeeListDialog.o src/EmployeeListDialog.cpp
 
+o/login_dialog.o: src/login_dialog.cpp include/login_dialog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/login_dialog.o src/login_dialog.cpp
+
 o/moc_add_emp_form.o: moc/moc_add_emp_form.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/moc_add_emp_form.o moc/moc_add_emp_form.cpp
 
 o/moc_EmployeeListDialog.o: moc/moc_EmployeeListDialog.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/moc_EmployeeListDialog.o moc/moc_EmployeeListDialog.cpp
+
+o/moc_login_dialog.o: moc/moc_login_dialog.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/moc_login_dialog.o moc/moc_login_dialog.cpp
 
 ####### Install
 
