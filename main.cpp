@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <iostream>
 
+#include "clock.h"
 #include "add_emp_form.h"
 #include "login_dialog.h"
 #include "EmployeeListDialog.h"
@@ -21,7 +22,7 @@ void qt_window(QWidget& wd)
     wd.setWindowTitle("EMS");
 }
 
-// ✅ Convert this to a standalone function (not member of MainWindow)
+// Convert this to a standalone function (not member of MainWindow)
 void onAddEmployeeClicked()
 {
     AddEmployeeForm* form = new AddEmployeeForm(nullptr);  // separate window
@@ -91,6 +92,20 @@ int main(int argc, char *argv[])
     qt_window(wd);
     admin_button(wd);
     all_emp_btn(wd);
+
+    // // Create and assign layout first
+    // QVBoxLayout* layout = new QVBoxLayout(&wd);
+    // wd.setLayout(layout);
+
+    // // Create and display the clock in layout
+    // Clock* clockWidget = new Clock(layout);
+
+     // ✅ Add clock widget with manual geometry (top-center or top-right)
+    Clock* clockWidget = new Clock(nullptr);
+    clockWidget->setParent(&wd);
+    clockWidget->setGeometry(1050, 50, 300, 100); // Adjust position as needed
+    clockWidget->show();
+
     wd.showFullScreen();
 
     return application.exec();
