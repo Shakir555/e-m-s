@@ -18,7 +18,8 @@ HEADERS += include/emp_btn.h \
            include/EmployeeListDialog.h \
            include/emp.h \
            include/login_dialog.h \
-           include/clock.h
+           include/clock.h \
+           include/gradientStyle.h
 
 # Output directories for build artifacts
 OBJECTS_DIR = o

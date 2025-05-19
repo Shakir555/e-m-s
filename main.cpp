@@ -90,6 +90,8 @@ int main(int argc, char *argv[])
     QWidget wd;
 
     qt_window(wd);
+    // Set black background for main window
+    // wd.setStyleSheet("background-color: black;");
     admin_button(wd);
     all_emp_btn(wd);
 

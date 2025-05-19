@@ -11,14 +11,14 @@ class Clock : public QWidget
     Q_OBJECT
 
 public:
-    Clock(QVBoxLayout* parentLayout = nullptr);
+    explicit Clock(QVBoxLayout* parentLayout = nullptr);
 
 private slots:
     void updateTime();
 
 private:
-    QLabel* timeLabel;
     QLabel* dateLabel;
+    QLabel* timeLabel;
     QTimer* timer;
 };
 

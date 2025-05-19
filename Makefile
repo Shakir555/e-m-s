@@ -154,7 +154,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		include/EmployeeListDialog.h \
 		include/emp.h \
 		include/login_dialog.h \
-		include/clock.h main.cpp \
+		include/clock.h \
+		include/gradientStyle.h main.cpp \
 		src/emp_btn.cpp \
 		src/add_emp_form.cpp \
 		src/EmployeeListDialog.cpp \
@@ -345,7 +346,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/emp_btn.h include/add_emp_form.h include/EmployeeListDialog.h include/emp.h include/login_dialog.h include/clock.h $(DISTDIR)/
+	$(COPY_FILE) --parents include/emp_btn.h include/add_emp_form.h include/EmployeeListDialog.h include/emp.h include/login_dialog.h include/clock.h include/gradientStyle.h $(DISTDIR)/
 	$(COPY_FILE) --parents main.cpp src/emp_btn.cpp src/add_emp_form.cpp src/EmployeeListDialog.cpp src/login_dialog.cpp src/clock.cpp $(DISTDIR)/
 
 
@@ -445,7 +446,8 @@ o/EmployeeListDialog.o: src/EmployeeListDialog.cpp include/EmployeeListDialog.h 
 o/login_dialog.o: src/login_dialog.cpp include/login_dialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/login_dialog.o src/login_dialog.cpp
 
-o/clock.o: src/clock.cpp include/clock.h
+o/clock.o: src/clock.cpp include/clock.h \
+		include/gradientStyle.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/clock.o src/clock.cpp
 
 o/moc_add_emp_form.o: moc/moc_add_emp_form.cpp 
