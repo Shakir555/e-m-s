@@ -95,6 +95,21 @@ int main(int argc, char *argv[])
     admin_button(wd);
     all_emp_btn(wd);
 
+    // ✅ Add centered "E-M-S" title label
+    QLabel* titleLabel = new QLabel("E-M-S", &wd);
+    titleLabel->setAlignment(Qt::AlignCenter);
+
+    QFont titleFont;
+    titleFont.setPointSize(40);  // Large font
+    titleFont.setBold(true);
+    titleLabel->setFont(titleFont);
+    titleLabel->setStyleSheet("color: black;");
+
+    // Center horizontally, near the top
+    int windowWidth = QGuiApplication::primaryScreen()->availableGeometry().width();
+    titleLabel->setGeometry((windowWidth - 300) / 2, 30, 300, 100);
+
+
     // // Create and assign layout first
     // QVBoxLayout* layout = new QVBoxLayout(&wd);
     // wd.setLayout(layout);
