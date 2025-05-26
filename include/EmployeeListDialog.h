@@ -3,8 +3,7 @@
 
 #include <QDialog>
 #include <QTextEdit>
-#include <QVector>
-#include "emp.h"  // Assuming you have an Employee struct/class
+#include "emp.h"
 
 class EmployeeListDialog : public QDialog
 {
@@ -12,10 +11,11 @@ class EmployeeListDialog : public QDialog
 
 public:
     explicit EmployeeListDialog(QWidget* parent = nullptr);
-    void setEmployeeList(const QVector<Employee>& employees);
+    void setEmployeeList(const QVector<Employee>& employees) {} // optional fallback
 
 private:
     QTextEdit* employeeTextEdit;
+    void loadEmployeesFromDatabase(); // ✅ add this method
 };
 
 #endif // EMPLOYEELISTDIALOG_H

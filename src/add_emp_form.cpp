@@ -1,12 +1,17 @@
+#include <QtSql>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
 #include "add_emp_form.h"
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <iostream>
 
-extern std::vector<Employee> globalEmployeeList; 
+extern std::vector<Employee> globalEmployeeList;
 
-AddEmployeeForm::AddEmployeeForm(QWidget* parent) : QDialog(parent)  // ✅ Use QDialog here
+AddEmployeeForm::AddEmployeeForm(QWidget* parent) : QDialog(parent)
 {
     setWindowTitle("Add Employee");
     setFixedSize(300, 400);
@@ -45,7 +50,33 @@ void AddEmployeeForm::saveEmployee()
     emp.department = deptEdit->text();
     emp.salary = salaryEdit->text();
 
-    globalEmployeeList.push_back(emp);  // ✅ Use global list
+    globalEmployeeList.push_back(emp);
 
-    QMessageBox::information(this, "Saved", "Employee Data Saved!");
+    // Database Insertion Logic
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName("sql12.freesqldatabase.com");
+    db.setDatabaseName("sql12781050");
+    db.setUserName("sql12781050");
+    db.setPassword("nTkylB8LP9");
+    db.setPort(3306);
+
+    if (!db.open()) {
+        QMessageBox::critical(this, "DB Connection Failed", db.lastError().text());
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO employees (name, id, department, salary) VALUES (?, ?, ?, ?)");
+    query.addBindValue(emp.name);
+    query.addBindValue(emp.id);
+    query.addBindValue(emp.department);
+    query.addBindValue(emp.salary);
+
+    if (!query.exec()) {
+        QMessageBox::critical(this, "Insert Failed", query.lastError().text());
+    } else {
+        QMessageBox::information(this, "Success", "Employee inserted into database!");
+    }
+
+    db.close();
 }
