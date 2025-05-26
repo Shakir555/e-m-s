@@ -6,6 +6,7 @@ INCLUDEPATH += include
 
 # Source files
 SOURCES += main.cpp \
+           src/main_window.cpp \
            src/emp_btn.cpp \
            src/add_emp_form.cpp \
            src/EmployeeListDialog.cpp \
@@ -13,7 +14,8 @@ SOURCES += main.cpp \
            src/clock.cpp
 
 # Header files
-HEADERS += include/emp_btn.h \
+HEADERS += include/main_window.h \
+           include/emp_btn.h \
            include/add_emp_form.h \
            include/EmployeeListDialog.h \
            include/emp.h \

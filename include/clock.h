@@ -11,7 +11,7 @@ class Clock : public QWidget
     Q_OBJECT
 
 public:
-    explicit Clock(QVBoxLayout* parentLayout = nullptr);
+    explicit Clock(QWidget* parent = nullptr);
 
 private slots:
     void updateTime();

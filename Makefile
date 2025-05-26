@@ -53,20 +53,24 @@ OBJECTS_DIR   = o/
 ####### Files
 
 SOURCES       = main.cpp \
+		src/main_window.cpp \
 		src/emp_btn.cpp \
 		src/add_emp_form.cpp \
 		src/EmployeeListDialog.cpp \
 		src/login_dialog.cpp \
-		src/clock.cpp moc/moc_add_emp_form.cpp \
+		src/clock.cpp moc/moc_main_window.cpp \
+		moc/moc_add_emp_form.cpp \
 		moc/moc_EmployeeListDialog.cpp \
 		moc/moc_login_dialog.cpp \
 		moc/moc_clock.cpp
 OBJECTS       = o/main.o \
+		o/main_window.o \
 		o/emp_btn.o \
 		o/add_emp_form.o \
 		o/EmployeeListDialog.o \
 		o/login_dialog.o \
 		o/clock.o \
+		o/moc_main_window.o \
 		o/moc_add_emp_form.o \
 		o/moc_EmployeeListDialog.o \
 		o/moc_login_dialog.o \
@@ -149,13 +153,15 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		hello_world.pro include/emp_btn.h \
+		hello_world.pro include/main_window.h \
+		include/emp_btn.h \
 		include/add_emp_form.h \
 		include/EmployeeListDialog.h \
 		include/emp.h \
 		include/login_dialog.h \
 		include/clock.h \
 		include/gradientStyle.h main.cpp \
+		src/main_window.cpp \
 		src/emp_btn.cpp \
 		src/add_emp_form.cpp \
 		src/EmployeeListDialog.cpp \
@@ -346,8 +352,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/emp_btn.h include/add_emp_form.h include/EmployeeListDialog.h include/emp.h include/login_dialog.h include/clock.h include/gradientStyle.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp src/emp_btn.cpp src/add_emp_form.cpp src/EmployeeListDialog.cpp src/login_dialog.cpp src/clock.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/main_window.h include/emp_btn.h include/add_emp_form.h include/EmployeeListDialog.h include/emp.h include/login_dialog.h include/clock.h include/gradientStyle.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp src/main_window.cpp src/emp_btn.cpp src/add_emp_form.cpp src/EmployeeListDialog.cpp src/login_dialog.cpp src/clock.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -379,9 +385,14 @@ compiler_moc_predefs_clean:
 moc/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc/moc_add_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_login_dialog.cpp moc/moc_clock.cpp
+compiler_moc_header_make_all: moc/moc_main_window.cpp moc/moc_add_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_login_dialog.cpp moc/moc_clock.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc/moc_add_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_login_dialog.cpp moc/moc_clock.cpp
+	-$(DEL_FILE) moc/moc_main_window.cpp moc/moc_add_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_login_dialog.cpp moc/moc_clock.cpp
+moc/moc_main_window.cpp: include/main_window.h \
+		moc/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/shakir-salam/Documents/proj/e-m-s/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/shakir-salam/Documents/proj/e-m-s -I/home/shakir-salam/Documents/proj/e-m-s/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include include/main_window.h -o moc/moc_main_window.cpp
+
 moc/moc_add_emp_form.cpp: include/add_emp_form.h \
 		include/EmployeeListDialog.h \
 		include/emp.h \
@@ -421,12 +432,16 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-o/main.o: main.cpp include/clock.h \
+o/main.o: main.cpp include/main_window.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/main.o main.cpp
+
+o/main_window.o: src/main_window.cpp include/main_window.h \
+		include/clock.h \
 		include/add_emp_form.h \
 		include/EmployeeListDialog.h \
 		include/emp.h \
 		include/login_dialog.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/main.o main.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/main_window.o src/main_window.cpp
 
 o/emp_btn.o: src/emp_btn.cpp include/emp_btn.h \
 		include/add_emp_form.h \
@@ -449,6 +464,9 @@ o/login_dialog.o: src/login_dialog.cpp include/login_dialog.h
 o/clock.o: src/clock.cpp include/clock.h \
 		include/gradientStyle.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/clock.o src/clock.cpp
+
+o/moc_main_window.o: moc/moc_main_window.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/moc_main_window.o moc/moc_main_window.cpp
 
 o/moc_add_emp_form.o: moc/moc_add_emp_form.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/moc_add_emp_form.o moc/moc_add_emp_form.cpp

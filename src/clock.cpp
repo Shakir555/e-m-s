@@ -3,7 +3,8 @@
 #include <QDate>
 #include "gradientStyle.h"
 
-Clock::Clock(QVBoxLayout* parentLayout)
+Clock::Clock(QWidget* parent)
+    : QWidget(parent)
 {
     dateLabel = new QLabel(this);
     dateLabel->setAlignment(Qt::AlignCenter);
@@ -33,7 +34,6 @@ Clock::Clock(QVBoxLayout* parentLayout)
     QFont font;
     font.setPointSize(10);
     font.setBold(true);
-    // font.setFamily("Calibri");
     dateLabel->setFont(font);
     timeLabel->setFont(font);
 
@@ -50,11 +50,6 @@ Clock::Clock(QVBoxLayout* parentLayout)
     layout->addWidget(dateLabel);
     layout->addWidget(timeLabel);
     setLayout(layout);
-
-    // Add to parent layout if provided
-    if (parentLayout) {
-        parentLayout->addWidget(this);
-    }
 }
 
 void Clock::updateTime()
