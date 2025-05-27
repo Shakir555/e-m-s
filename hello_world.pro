@@ -9,6 +9,8 @@ SOURCES += main.cpp \
            src/main_window.cpp \
            src/emp_btn.cpp \
            src/add_emp_form.cpp \
+           src/edit_emp_form.cpp \
+           src/del_emp_form.cpp \
            src/EmployeeListDialog.cpp \
            src/login_dialog.cpp \
            src/clock.cpp
@@ -17,6 +19,8 @@ SOURCES += main.cpp \
 HEADERS += include/main_window.h \
            include/emp_btn.h \
            include/add_emp_form.h \
+           include/edit_emp_form.h \
+           include/del_emp_form.h \
            include/EmployeeListDialog.h \
            include/emp.h \
            include/login_dialog.h \

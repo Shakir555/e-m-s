@@ -1,6 +1,8 @@
 #include "main_window.h"
 #include "clock.h"
 #include "add_emp_form.h"
+#include "edit_emp_form.h"
+#include "del_emp_form.h"
 #include "login_dialog.h"
 #include "EmployeeListDialog.h"
 
@@ -15,7 +17,6 @@ std::vector<Employee> globalEmployeeList;
 
 MainWindow::MainWindow(int screenWidth, QWidget *parent) : QWidget(parent)
 {
-    // Set window icon and title
     this->setWindowIcon(QIcon("/home/shakir-salam/Documents/proj/e-m-s/resource/icon/icon.png"));
     this->setWindowTitle("EMS");
 
@@ -43,10 +44,22 @@ MainWindow::MainWindow(int screenWidth, QWidget *parent) : QWidget(parent)
     // Edit Employee Button
     QPushButton* editButton = new QPushButton("Edit Employee", this);
     editButton->setGeometry(1100, 400, 200, 100);
+    connect(editButton, &QPushButton::clicked, []() {
+        EditEmployeeForm* form = new EditEmployeeForm(nullptr);
+        form->setAttribute(Qt::WA_DeleteOnClose);
+        form->setModal(true);
+        form->show();
+    });
 
     // Delete Employee Button
     QPushButton* deleteButton = new QPushButton("Delete Employee", this);
     deleteButton->setGeometry(1100, 500, 200, 100);
+    connect(deleteButton, &QPushButton::clicked, []() {
+        DeleteEmployeeForm* form = new DeleteEmployeeForm(nullptr);
+        form->setAttribute(Qt::WA_DeleteOnClose);
+        form->setModal(true);
+        form->show();
+    });
 
     // View Employee Button
     QPushButton* viewButton = new QPushButton("View Employees", this);
@@ -57,7 +70,6 @@ MainWindow::MainWindow(int screenWidth, QWidget *parent) : QWidget(parent)
             employeeQVector.append(e);
 
         EmployeeListDialog* dialog = new EmployeeListDialog(nullptr);
-        dialog->setEmployeeList(employeeQVector);
         dialog->exec();
     });
 

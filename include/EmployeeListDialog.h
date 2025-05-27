@@ -11,7 +11,7 @@ class EmployeeListDialog : public QDialog
 
 public:
     explicit EmployeeListDialog(QWidget* parent = nullptr);
-    void setEmployeeList(const QVector<Employee>& employees) {} // optional fallback
+    //void setEmployeeList(const QVector<Employee>& employees) {} // optional fallback
 
 private:
     QTextEdit* employeeTextEdit;
