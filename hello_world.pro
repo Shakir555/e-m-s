@@ -12,6 +12,7 @@ SOURCES += main.cpp \
            src/edit_emp_form.cpp \
            src/del_emp_form.cpp \
            src/EmployeeListDialog.cpp \
+           src/piechart.cpp \
            src/login_dialog.cpp \
            src/clock.cpp
 
@@ -23,6 +24,7 @@ HEADERS += include/main_window.h \
            include/del_emp_form.h \
            include/EmployeeListDialog.h \
            include/emp.h \
+           include/piechart.h \
            include/login_dialog.h \
            include/clock.h \
            include/gradientStyle.h

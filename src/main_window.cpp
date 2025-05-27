@@ -5,6 +5,7 @@
 #include "del_emp_form.h"
 #include "login_dialog.h"
 #include "EmployeeListDialog.h"
+#include "piechart.h"
 
 #include <QPushButton>
 #include <QLabel>
@@ -12,10 +13,13 @@
 #include <QIcon>
 #include <QMessageBox>
 #include <QVector>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 std::vector<Employee> globalEmployeeList;
 
-MainWindow::MainWindow(int screenWidth, QWidget *parent) : QWidget(parent)
+MainWindow::MainWindow(int screenWidth, int screenHeight, QWidget *parent) : QWidget(parent)
 {
     this->setWindowIcon(QIcon("/home/shakir-salam/Documents/proj/e-m-s/resource/icon/icon.png"));
     this->setWindowTitle("EMS");
@@ -27,7 +31,6 @@ MainWindow::MainWindow(int screenWidth, QWidget *parent) : QWidget(parent)
         LoginDialog loginDialog(this);
         if (loginDialog.exec() == QDialog::Accepted && loginDialog.isAuthenticated()) {
             QMessageBox::information(this, "Success", "Admin logged in!");
-            // TODO: enable admin-only features
         }
     });
 
@@ -84,7 +87,37 @@ MainWindow::MainWindow(int screenWidth, QWidget *parent) : QWidget(parent)
     titleLabel->setGeometry((screenWidth - 300) / 2, 30, 300, 100);
 
     // Clock widget
-    Clock* clockWidget = new Clock(this);
+    clockWidget = new Clock(this);
     clockWidget->setGeometry(1050, 50, 300, 100);
     clockWidget->show();
+
+    // Pie Chart Widget (centered horizontally and vertically)
+    pieChartWidget = new PieChartOpenGLWidget(this);
+    int pieChartWidth = 500;
+    int pieChartHeight = 500;
+    int pieChartX = (screenWidth - pieChartWidth) / 2;   // Center horizontally
+    int pieChartY = (screenHeight - pieChartHeight) / 2; // Center vertically
+    pieChartWidget->setGeometry(pieChartX, pieChartY, pieChartWidth, pieChartHeight);
+
+    // Fetch Data from DB
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "MainPieChartConn");
+    db.setHostName("sql12.freesqldatabase.com");
+    db.setDatabaseName("sql12781050");
+    db.setUserName("sql12781050");
+    db.setPassword("nTkylB8LP9");
+    db.setPort(3306);
+
+    if (db.open()) {
+        QSqlQuery query("SELECT department, COUNT(*) FROM employees GROUP BY department", db);
+        QMap<QString, int> departmentData;
+
+        while (query.next()) {
+            departmentData[query.value(0).toString()] = query.value(1).toInt();
+        }
+
+        pieChartWidget->setDepartmentData(departmentData);
+        db.close();
+    } else {
+        QMessageBox::warning(this, "Database Error", db.lastError().text());
+    }
 }

@@ -59,12 +59,14 @@ SOURCES       = main.cpp \
 		src/edit_emp_form.cpp \
 		src/del_emp_form.cpp \
 		src/EmployeeListDialog.cpp \
+		src/piechart.cpp \
 		src/login_dialog.cpp \
 		src/clock.cpp moc/moc_main_window.cpp \
 		moc/moc_add_emp_form.cpp \
 		moc/moc_edit_emp_form.cpp \
 		moc/moc_del_emp_form.cpp \
 		moc/moc_EmployeeListDialog.cpp \
+		moc/moc_piechart.cpp \
 		moc/moc_login_dialog.cpp \
 		moc/moc_clock.cpp
 OBJECTS       = o/main.o \
@@ -74,6 +76,7 @@ OBJECTS       = o/main.o \
 		o/edit_emp_form.o \
 		o/del_emp_form.o \
 		o/EmployeeListDialog.o \
+		o/piechart.o \
 		o/login_dialog.o \
 		o/clock.o \
 		o/moc_main_window.o \
@@ -81,6 +84,7 @@ OBJECTS       = o/main.o \
 		o/moc_edit_emp_form.o \
 		o/moc_del_emp_form.o \
 		o/moc_EmployeeListDialog.o \
+		o/moc_piechart.o \
 		o/moc_login_dialog.o \
 		o/moc_clock.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -168,6 +172,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		include/del_emp_form.h \
 		include/EmployeeListDialog.h \
 		include/emp.h \
+		include/piechart.h \
 		include/login_dialog.h \
 		include/clock.h \
 		include/gradientStyle.h main.cpp \
@@ -177,6 +182,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/edit_emp_form.cpp \
 		src/del_emp_form.cpp \
 		src/EmployeeListDialog.cpp \
+		src/piechart.cpp \
 		src/login_dialog.cpp \
 		src/clock.cpp
 QMAKE_TARGET  = hello_world
@@ -364,8 +370,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/main_window.h include/emp_btn.h include/add_emp_form.h include/edit_emp_form.h include/del_emp_form.h include/EmployeeListDialog.h include/emp.h include/login_dialog.h include/clock.h include/gradientStyle.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp src/main_window.cpp src/emp_btn.cpp src/add_emp_form.cpp src/edit_emp_form.cpp src/del_emp_form.cpp src/EmployeeListDialog.cpp src/login_dialog.cpp src/clock.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/main_window.h include/emp_btn.h include/add_emp_form.h include/edit_emp_form.h include/del_emp_form.h include/EmployeeListDialog.h include/emp.h include/piechart.h include/login_dialog.h include/clock.h include/gradientStyle.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp src/main_window.cpp src/emp_btn.cpp src/add_emp_form.cpp src/edit_emp_form.cpp src/del_emp_form.cpp src/EmployeeListDialog.cpp src/piechart.cpp src/login_dialog.cpp src/clock.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -397,10 +403,11 @@ compiler_moc_predefs_clean:
 moc/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc/moc_main_window.cpp moc/moc_add_emp_form.cpp moc/moc_edit_emp_form.cpp moc/moc_del_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_login_dialog.cpp moc/moc_clock.cpp
+compiler_moc_header_make_all: moc/moc_main_window.cpp moc/moc_add_emp_form.cpp moc/moc_edit_emp_form.cpp moc/moc_del_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_piechart.cpp moc/moc_login_dialog.cpp moc/moc_clock.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc/moc_main_window.cpp moc/moc_add_emp_form.cpp moc/moc_edit_emp_form.cpp moc/moc_del_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_login_dialog.cpp moc/moc_clock.cpp
+	-$(DEL_FILE) moc/moc_main_window.cpp moc/moc_add_emp_form.cpp moc/moc_edit_emp_form.cpp moc/moc_del_emp_form.cpp moc/moc_EmployeeListDialog.cpp moc/moc_piechart.cpp moc/moc_login_dialog.cpp moc/moc_clock.cpp
 moc/moc_main_window.cpp: include/main_window.h \
+		include/emp.h \
 		moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/shakir-salam/Documents/proj/e-m-s/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/shakir-salam/Documents/proj/e-m-s -I/home/shakir-salam/Documents/proj/e-m-s/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include include/main_window.h -o moc/moc_main_window.cpp
@@ -428,6 +435,11 @@ moc/moc_EmployeeListDialog.cpp: include/EmployeeListDialog.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/shakir-salam/Documents/proj/e-m-s/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/shakir-salam/Documents/proj/e-m-s -I/home/shakir-salam/Documents/proj/e-m-s/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include include/EmployeeListDialog.h -o moc/moc_EmployeeListDialog.cpp
 
+moc/moc_piechart.cpp: include/piechart.h \
+		moc/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/shakir-salam/Documents/proj/e-m-s/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/shakir-salam/Documents/proj/e-m-s -I/home/shakir-salam/Documents/proj/e-m-s/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include include/piechart.h -o moc/moc_piechart.cpp
+
 moc/moc_login_dialog.cpp: include/login_dialog.h \
 		moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -454,17 +466,19 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-o/main.o: main.cpp include/main_window.h
+o/main.o: main.cpp include/main_window.h \
+		include/emp.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/main.o main.cpp
 
 o/main_window.o: src/main_window.cpp include/main_window.h \
+		include/emp.h \
 		include/clock.h \
 		include/add_emp_form.h \
 		include/EmployeeListDialog.h \
-		include/emp.h \
 		include/edit_emp_form.h \
 		include/del_emp_form.h \
-		include/login_dialog.h
+		include/login_dialog.h \
+		include/piechart.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/main_window.o src/main_window.cpp
 
 o/emp_btn.o: src/emp_btn.cpp include/emp_btn.h \
@@ -488,6 +502,9 @@ o/EmployeeListDialog.o: src/EmployeeListDialog.cpp include/EmployeeListDialog.h 
 		include/emp.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/EmployeeListDialog.o src/EmployeeListDialog.cpp
 
+o/piechart.o: src/piechart.cpp include/piechart.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/piechart.o src/piechart.cpp
+
 o/login_dialog.o: src/login_dialog.cpp include/login_dialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/login_dialog.o src/login_dialog.cpp
 
@@ -509,6 +526,9 @@ o/moc_del_emp_form.o: moc/moc_del_emp_form.cpp
 
 o/moc_EmployeeListDialog.o: moc/moc_EmployeeListDialog.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/moc_EmployeeListDialog.o moc/moc_EmployeeListDialog.cpp
+
+o/moc_piechart.o: moc/moc_piechart.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/moc_piechart.o moc/moc_piechart.cpp
 
 o/moc_login_dialog.o: moc/moc_login_dialog.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/moc_login_dialog.o moc/moc_login_dialog.cpp

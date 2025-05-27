@@ -6,9 +6,13 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    int screenWidth = QGuiApplication::primaryScreen()->availableGeometry().width();
+    // Get screen dimensions
+    QScreen *screen = QGuiApplication::primaryScreen();
+    int screenWidth = screen->availableGeometry().width();
+    int screenHeight = screen->availableGeometry().height();
 
-    MainWindow window(screenWidth);
+    // Pass both width and height to MainWindow constructor
+    MainWindow window(screenWidth, screenHeight);
     window.showFullScreen(); // or window.show() for normal window
 
     return app.exec();
