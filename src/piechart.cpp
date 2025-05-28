@@ -16,7 +16,7 @@ void PieChartOpenGLWidget::setDepartmentData(const QMap<QString, int>& data)
 
 void PieChartOpenGLWidget::initializeGL()
 {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // White background
+    glClearColor(0.07f, 0.07f, 0.07f, 1.0f); // grey background
 }
 
 void PieChartOpenGLWidget::resizeGL(int w, int h)
@@ -45,7 +45,8 @@ void PieChartOpenGLWidget::paintGL()
     for (auto it = departmentCounts.begin(); it != departmentCounts.end(); ++it, ++colorIndex) {
         float percentage = static_cast<float>(it.value()) / total;
         float spanAngle = percentage * 360.0f;
-
+        
+        painter.setPen(QPen(Qt::black, 2));// 2px gold outline
         painter.setBrush(colors[colorIndex % 6]);
         painter.drawPie(rect, startAngle * 16, spanAngle * 16);
         startAngle += spanAngle;

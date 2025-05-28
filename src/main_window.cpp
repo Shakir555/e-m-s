@@ -16,18 +16,61 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
-#include <qfile.h>
-#include <qlocale.h>
-#include <qtextstream.h>
-#include <qdebug.h>
-#include <qcoreapplication.h>
+#include <QFile>
+#include <QLocale>
+#include <QTextStream>
+#include <QDebug>
+#include <QCoreApplication>
 
 std::vector<Employee> globalEmployeeList;
 
 MainWindow::MainWindow(int screenWidth, int screenHeight, QWidget *parent) : QWidget(parent)
 {
-    this->setWindowIcon(QIcon("/home/shakir-salam/Documents/proj/e-m-s/resource/icon/icon.png"));
+    this->setWindowIcon(QIcon(":/icon/icon.png"));
     this->setWindowTitle("EMS");
+
+    // Apply Deus Ex Theme
+    this->setStyleSheet(R"(
+        QWidget {
+            background-color: #121212;
+            color: #FFD700;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        QPushButton {
+            background-color: #1e1e1e;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        QPushButton:hover {
+            background-color: #FFD700;
+            color: #121212;
+        }
+        QLabel {
+            color: #FFD700;
+        }
+    )");
+
+    // Title
+    QLabel* titleLabel = new QLabel("E-M-S", this);
+    titleLabel->setAlignment(Qt::AlignCenter);
+    QFont titleFont("Orbitron", 40, QFont::Bold);
+    titleLabel->setFont(titleFont);
+    titleLabel->setGeometry((screenWidth - 400) / 2, 30, 400, 80);
+
+    // Clock Widget
+    clockWidget = new Clock(this);
+    clockWidget->setGeometry(1050, 50, 300, 100);
+    clockWidget->show();
+
+    // Version label
+    QLabel* versionLabel = new QLabel("FW Version: 1.0.0", this);
+    QFont versionFont("Segoe UI", 10);
+    versionFont.setItalic(true);
+    versionLabel->setFont(versionFont);
+    versionLabel->setGeometry(10, screenHeight - 30, 200, 20);
 
     // Admin Login Button
     QPushButton* loginButton = new QPushButton("Admin Login", this);
@@ -39,89 +82,56 @@ MainWindow::MainWindow(int screenWidth, int screenHeight, QWidget *parent) : QWi
         }
     });
 
-    // Add Employee Button
+    // Add Employee
     QPushButton* addButton = new QPushButton("Add Employee", this);
     addButton->setGeometry(1100, 300, 200, 100);
     connect(addButton, &QPushButton::clicked, []() {
-        AddEmployeeForm* form = new AddEmployeeForm(nullptr);
+        auto* form = new AddEmployeeForm(nullptr);
         form->setAttribute(Qt::WA_DeleteOnClose);
         form->setModal(true);
         form->show();
     });
 
-    // Edit Employee Button
+    // Edit Employee
     QPushButton* editButton = new QPushButton("Edit Employee", this);
     editButton->setGeometry(1100, 400, 200, 100);
     connect(editButton, &QPushButton::clicked, []() {
-        EditEmployeeForm* form = new EditEmployeeForm(nullptr);
+        auto* form = new EditEmployeeForm(nullptr);
         form->setAttribute(Qt::WA_DeleteOnClose);
         form->setModal(true);
         form->show();
     });
 
-    // Delete Employee Button
+    // Delete Employee
     QPushButton* deleteButton = new QPushButton("Delete Employee", this);
     deleteButton->setGeometry(1100, 500, 200, 100);
     connect(deleteButton, &QPushButton::clicked, []() {
-        DeleteEmployeeForm* form = new DeleteEmployeeForm(nullptr);
+        auto* form = new DeleteEmployeeForm(nullptr);
         form->setAttribute(Qt::WA_DeleteOnClose);
         form->setModal(true);
         form->show();
     });
 
-    // View Employee Button
+    // View Employees
     QPushButton* viewButton = new QPushButton("View Employees", this);
     viewButton->setGeometry(1100, 600, 200, 100);
     connect(viewButton, &QPushButton::clicked, []() {
         QVector<Employee> employeeQVector;
         for (const auto& e : globalEmployeeList)
             employeeQVector.append(e);
-
-        EmployeeListDialog* dialog = new EmployeeListDialog(nullptr);
+        auto* dialog = new EmployeeListDialog(nullptr);
         dialog->exec();
     });
 
-    // EMS Title Label
-    QLabel* titleLabel = new QLabel("E-M-S", this);
-    titleLabel->setAlignment(Qt::AlignCenter);
-    QFont titleFont;
-    titleFont.setPointSize(40);
-    titleFont.setBold(true);
-    titleLabel->setFont(titleFont);
-    titleLabel->setStyleSheet("color: black;");
-    titleLabel->setGeometry((screenWidth - 300) / 2, 30, 300, 100);
-
-    // Software Version
-    // Then add version label with fixed position (e.g., bottom right)
-    QLabel* versionLabel = new QLabel(this);
-    versionLabel->setText("FW Version: 1.0.0");
-    QFont versionFont;
-    versionFont.setPointSize(10);
-    versionFont.setItalic(true);
-    versionLabel->setFont(versionFont);
-    versionLabel->setStyleSheet("color: black;");
-
-    int margin = 10;
-    int labelWidth = 100;  // estimated width
-    int labelHeight = 20;  // estimated height
-    // Position: x = margin (left side), y = screenHeight - labelHeight - margin (bottom)
-    versionLabel->setGeometry(margin, screenHeight - labelHeight - margin, labelWidth, labelHeight);
-    versionLabel->show();
-
-    // Clock widget
-    clockWidget = new Clock(this);
-    clockWidget->setGeometry(1050, 50, 300, 100);
-    clockWidget->show();
-
-    // Pie Chart Widget (centered horizontally and vertically)
+    // Pie Chart Widget
     pieChartWidget = new PieChartOpenGLWidget(this);
     int pieChartWidth = 500;
     int pieChartHeight = 500;
-    int pieChartX = (screenWidth - pieChartWidth) / 2;   // Center horizontally
-    int pieChartY = (screenHeight - pieChartHeight) / 2; // Center vertically
+    int pieChartX = (screenWidth - pieChartWidth) / 2;
+    int pieChartY = (screenHeight - pieChartHeight) / 2;
     pieChartWidget->setGeometry(pieChartX, pieChartY, pieChartWidth, pieChartHeight);
 
-    // Fetch Data from DB
+    // Connect to Database
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "MainPieChartConn");
     db.setHostName("sql12.freesqldatabase.com");
     db.setDatabaseName("sql12781050");
