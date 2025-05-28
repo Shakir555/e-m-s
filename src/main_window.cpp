@@ -16,6 +16,11 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <qfile.h>
+#include <qlocale.h>
+#include <qtextstream.h>
+#include <qdebug.h>
+#include <qcoreapplication.h>
 
 std::vector<Employee> globalEmployeeList;
 
@@ -85,6 +90,23 @@ MainWindow::MainWindow(int screenWidth, int screenHeight, QWidget *parent) : QWi
     titleLabel->setFont(titleFont);
     titleLabel->setStyleSheet("color: black;");
     titleLabel->setGeometry((screenWidth - 300) / 2, 30, 300, 100);
+
+    // Software Version
+    // Then add version label with fixed position (e.g., bottom right)
+    QLabel* versionLabel = new QLabel(this);
+    versionLabel->setText("FW Version: 1.0.0");
+    QFont versionFont;
+    versionFont.setPointSize(10);
+    versionFont.setItalic(true);
+    versionLabel->setFont(versionFont);
+    versionLabel->setStyleSheet("color: black;");
+
+    int margin = 10;
+    int labelWidth = 100;  // estimated width
+    int labelHeight = 20;  // estimated height
+    // Position: x = margin (left side), y = screenHeight - labelHeight - margin (bottom)
+    versionLabel->setGeometry(margin, screenHeight - labelHeight - margin, labelWidth, labelHeight);
+    versionLabel->show();
 
     // Clock widget
     clockWidget = new Clock(this);
