@@ -26,7 +26,7 @@ Clock::Clock(QWidget* parent): QWidget(parent)
 void Clock::updateTime()
 {
     dateLabel->setText(QDate::currentDate().toString("dddd, MMMM d, yyyy"));
-    dateLabel->setStyleSheet("color: black");
-    timeLabel->setText(QDate::currentDate().toString("hh:mm:ss"));
-    timeLabel->setStyleSheet("color: black");
+    dateLabel->setStyleSheet("color: yellow");
+    timeLabel->setText(QTime::currentTime().toString("hh:mm:ss"));
+    timeLabel->setStyleSheet("color: yellow");
 }

@@ -14,7 +14,7 @@ extern std::vector<Employee> globalEmployeeList;
 AddEmployeeForm::AddEmployeeForm(QWidget* parent) : QDialog(parent)
 {
     setWindowTitle("Add Employee");
-    setFixedSize(300, 300);
+    setFixedSize(300, 200);
     nameEdit = new QLineEdit(this);
     idEdit = new QLineEdit(this);
     deptEdit = new QLineEdit(this);
