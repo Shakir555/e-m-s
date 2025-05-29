@@ -1,11 +1,12 @@
-#ifndef DEL_EMP_FORM_H
-#define DEL_EMP_FORM_H
+#ifndef DEL_EMP_BTN
+#define DEL_EMP_BTN
 
 #include <QDialog>
 #include <QLineEdit>
 #include <QPushButton>
 
-class DeleteEmployeeForm : public QDialog {
+class DeleteEmployeeForm:public QDialog
+{
     Q_OBJECT
 
 public:
@@ -19,4 +20,4 @@ private:
     QPushButton* deleteBtn;
 };
 
-#endif // DEL_EMP_FORM_H
+#endif
