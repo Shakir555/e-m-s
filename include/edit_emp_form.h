@@ -5,7 +5,8 @@
 #include <QLineEdit>
 #include <QPushButton>
 
-class EditEmployeeForm : public QDialog {
+class EditEmployeeForm: public QDialog
+{
     Q_OBJECT
 
 public:
@@ -16,8 +17,12 @@ private slots:
     void updateEmployee();
 
 private:
-    QLineEdit *idEdit, *nameEdit, *deptEdit, *salaryEdit;
-    QPushButton *fetchBtn, *updateBtn;
+    QLineEdit* idEdit;
+    QLineEdit* nameEdit;
+    QLineEdit* deptEdit;
+    QLineEdit* salaryEdit;
+    QPushButton* fetchBtn;
+    QPushButton* updateBtn;
 };
 
-#endif // EDIT_EMP_FORM_H
+#endif
