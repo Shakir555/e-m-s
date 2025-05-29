@@ -1,12 +1,12 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
-#include <QWidget>
 #include <QLabel>
 #include <QTimer>
+#include <QWidget>
 #include <QVBoxLayout>
 
-class Clock : public QWidget
+class Clock: public QWidget
 {
     Q_OBJECT
 
@@ -15,11 +15,11 @@ public:
 
 private slots:
     void updateTime();
-
+    
 private:
     QLabel* dateLabel;
     QLabel* timeLabel;
     QTimer* timer;
 };
 
-#endif // CLOCK_H
+#endif
