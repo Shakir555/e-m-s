@@ -83,6 +83,7 @@ MainWindow::MainWindow(int screenWidth, int screenHeight, QWidget *parent) : QWi
     });
 
     // Add Employee
+    this->setStyleSheet("background-color: black; color: white;");
     QPushButton* addButton = new QPushButton("Add Employee", this);
     addButton->setGeometry(1100, 300, 200, 100);
     connect(addButton, &QPushButton::clicked, []() {

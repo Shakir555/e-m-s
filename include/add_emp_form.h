@@ -6,7 +6,7 @@
 #include <QPushButton>
 #include "EmployeeListDialog.h"
 
-class AddEmployeeForm : public QDialog  // ✅ Use QDialog here
+class AddEmployeeForm : public QDialog
 {
     Q_OBJECT
 
@@ -25,4 +25,4 @@ private:
     std::vector<Employee> employeeList;
 };
 
-#endif // ADD_EMP_FORM_H
+#endif
