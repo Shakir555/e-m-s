@@ -508,8 +508,7 @@ o/piechart.o: src/piechart.cpp include/piechart.h
 o/login_dialog.o: src/login_dialog.cpp include/login_dialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/login_dialog.o src/login_dialog.cpp
 
-o/clock.o: src/clock.cpp include/clock.h \
-		include/gradientStyle.h
+o/clock.o: src/clock.cpp include/clock.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/clock.o src/clock.cpp
 
 o/moc_main_window.o: moc/moc_main_window.cpp 
