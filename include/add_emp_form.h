@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QPushButton>
-#include "EmployeeListDialog.h"
+#include "employeeListDialog.h"
 
 class AddEmployeeForm : public QDialog
 {
