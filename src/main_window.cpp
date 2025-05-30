@@ -4,7 +4,7 @@
 #include "edit_emp_form.h"
 #include "del_emp_form.h"
 #include "login_dialog.h"
-#include "EmployeeListDialog.h"
+#include "employeeListDialog.h"
 #include "piechart.h"
 
 #include <QPushButton>
