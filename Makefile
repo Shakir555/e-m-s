@@ -481,10 +481,10 @@ o/main_window.o: src/main_window.cpp include/main_window.h \
 		include/piechart.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/main_window.o src/main_window.cpp
 
-o/emp_btn.o: src/emp_btn.cpp include/emp_btn.h \
-		include/add_emp_form.h \
+o/emp_btn.o: src/emp_btn.cpp include/add_emp_form.h \
 		include/EmployeeListDialog.h \
-		include/emp.h
+		include/emp.h \
+		include/emp_btn.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o o/emp_btn.o src/emp_btn.cpp
 
 o/add_emp_form.o: src/add_emp_form.cpp include/add_emp_form.h \

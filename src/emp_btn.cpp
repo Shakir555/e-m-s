@@ -1,9 +1,10 @@
-#include <QWidget>
+#include <iostream>
 #include <QApplication>
 #include <QPushButton>
-#include <iostream>
-#include "emp_btn.h"
+#include <QWidget>
 #include "add_emp_form.h"
+#include "emp_btn.h"
+
 
 void add_emp_btn(QWidget& wd)
 {
@@ -12,7 +13,8 @@ void add_emp_btn(QWidget& wd)
     add_emp_btn->setToolTip("Create an employee details");
     add_emp_btn->setFont(QFont("Bold", 12, 1));
     add_emp_btn->setGeometry(10, 30, 280, 30);
-    QObject::connect(add_emp_btn, &QPushButton::clicked, [&](){
+    QObject::connect(add_emp_btn, &QPushButton::clicked, [&]()
+    {
         AddEmployeeForm* form = new AddEmployeeForm(&wd);
         form->show();
     });
