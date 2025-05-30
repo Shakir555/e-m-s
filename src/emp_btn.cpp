@@ -5,7 +5,6 @@
 #include "add_emp_form.h"
 #include "emp_btn.h"
 
-
 void add_emp_btn(QWidget& wd)
 {
     QPushButton* add_emp_btn = new QPushButton("Add Employee", &wd);

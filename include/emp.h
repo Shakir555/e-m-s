@@ -3,11 +3,12 @@
 
 #include <QString>
 
-struct Employee {
+struct Employee
+{
     QString name;
     QString id;
     QString department;
     QString salary;
 };
 
-#endif // EMPLOYEE_H
+#endif
