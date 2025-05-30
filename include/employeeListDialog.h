@@ -11,11 +11,10 @@ class EmployeeListDialog : public QDialog
 
 public:
     explicit EmployeeListDialog(QWidget* parent = nullptr);
-    //void setEmployeeList(const QVector<Employee>& employees) {} // optional fallback
 
 private:
     QTextEdit* employeeTextEdit;
-    void loadEmployeesFromDatabase(); // ✅ add this method
+    void loadEmployeesFromDatabase();
 };
 
-#endif // EMPLOYEELISTDIALOG_H
+#endif

@@ -1,4 +1,4 @@
-#include "EmployeeListDialog.h"
+#include "employeeListDialog.h"
 #include <QVBoxLayout>
 #include <QTextEdit>
 #include <QtSql>
