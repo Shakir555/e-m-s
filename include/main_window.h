@@ -8,16 +8,16 @@
 class Clock;
 class PieChartOpenGLWidget;
 
-class MainWindow : public QWidget
+class MainWindow:public QWidget
 {
     Q_OBJECT
-
+    
 public:
-    explicit MainWindow(int screenWidth, int screenHeight, QWidget *parent = nullptr);
+    explicit MainWindow(int screenWidth, int screenHeight, QWidget* parent = nullptr);
 
 private:
     Clock* clockWidget;
     PieChartOpenGLWidget* pieChartWidget;
 };
 
-#endif // MAIN_WINDOW_H
+#endif

@@ -30,28 +30,28 @@ MainWindow::MainWindow(int screenWidth, int screenHeight, QWidget *parent) : QWi
     this->setWindowTitle("EMS");
 
     // Apply Deus Ex Theme
-    this->setStyleSheet(R"(
-        QWidget {
-            background-color: #121212;
-            color: #FFD700;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        QPushButton {
-            background-color: #1e1e1e;
-            color: #FFD700;
-            border: 2px solid #FFD700;
-            border-radius: 10px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        QPushButton:hover {
-            background-color: #FFD700;
-            color: #121212;
-        }
-        QLabel {
-            color: #FFD700;
-        }
-    )");
+    // this->setStyleSheet(R"(
+    //     QWidget {
+    //         background-color: #121212;
+    //         color: #FFD700;
+    //         font-family: 'Segoe UI', sans-serif;
+    //     }
+    //     QPushButton {
+    //         background-color: #1e1e1e;
+    //         color: #FFD700;
+    //         border: 2px solid #FFD700;
+    //         border-radius: 10px;
+    //         padding: 10px;
+    //         font-size: 16px;
+    //     }
+    //     QPushButton:hover {
+    //         background-color: #FFD700;
+    //         color: #121212;
+    //     }
+    //     QLabel {
+    //         color: #FFD700;
+    //     }
+    // )");
 
     // Title
     QLabel* titleLabel = new QLabel("E-M-S", this);

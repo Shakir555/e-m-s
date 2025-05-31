@@ -1,109 +1,156 @@
-// #include "edit_emp_form.h"
-// #include <QFormLayout>
-// #include <QMessageBox>
-// #include <QSqlDatabase>
-// #include <QSqlQuery>
-// #include <QSqlError>
-// #include <QPushButton>
-// #include <QVBoxLayout>
+#include "main_window.h"
+#include "clock.h"
+#include "add_emp_form.h"
+#include "edit_emp_form.h"
+#include "del_emp_form.h"
+#include "login_dialog.h"
+#include "employeeListDialog.h"
+#include "piechart.h"
 
-// EditEmployeeForm::EditEmployeeForm(QWidget* parent) : QDialog(parent)
-// {
-//     setWindowTitle("Edit Employee");
-//     setFixedSize(300, 400);
+#include <QPushButton>
+#include <QLabel>
+#include <QFont>
+#include <QIcon>
+#include <QMessageBox>
+#include <QVector>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QFile>
+#include <QLocale>
+#include <QTextStream>
+#include <QDebug>
+#include <QCoreApplication>
 
-//     idEdit = new QLineEdit(this);
-//     nameEdit = new QLineEdit(this);
-//     deptEdit = new QLineEdit(this);
-//     salaryEdit = new QLineEdit(this);
-//     fetchBtn = new QPushButton("Fetch", this);
-//     updateBtn = new QPushButton("Update", this);
+std::vector<Employee> globalEmployeeList;
 
-//     QFormLayout* formLayout = new QFormLayout;
-//     formLayout->addRow("Employee ID to Edit:", idEdit);
-//     formLayout->addRow(fetchBtn);
-//     formLayout->addRow("Name:", nameEdit);
-//     formLayout->addRow("Department:", deptEdit);
-//     formLayout->addRow("Salary:", salaryEdit);
-//     formLayout->addRow(updateBtn);
+MainWindow::MainWindow(int screenWidth, int screenHeight, QWidget *parent) : QWidget(parent)
+{
+    this->setWindowIcon(QIcon(":/icon/icon.png"));
+    this->setWindowTitle("EMS");
 
-//     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-//     mainLayout->addLayout(formLayout);
-//     setLayout(mainLayout);
+    // Apply Deus Ex Theme
+    this->setStyleSheet(R"(
+        QWidget {
+            background-color: #121212;
+            color: #FFD700;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        QPushButton {
+            background-color: #1e1e1e;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        QPushButton:hover {
+            background-color: #FFD700;
+            color: #121212;
+        }
+        QLabel {
+            color: #FFD700;
+        }
+    )");
 
-//     connect(fetchBtn, &QPushButton::clicked, this, &EditEmployeeForm::fetchEmployee);
-//     connect(updateBtn, &QPushButton::clicked, this, &EditEmployeeForm::updateEmployee);
-// }
+    // Title
+    QLabel* titleLabel = new QLabel("E-M-S", this);
+    titleLabel->setAlignment(Qt::AlignCenter);
+    QFont titleFont("Orbitron", 40, QFont::Bold);
+    titleLabel->setFont(titleFont);
+    titleLabel->setGeometry((screenWidth - 400) / 2, 30, 400, 80);
 
-// void EditEmployeeForm::fetchEmployee()
-// {
-//     QString empId = idEdit->text().trimmed();
-//     if (empId.isEmpty()) {
-//         QMessageBox::warning(this, "Error", "Please enter an Employee ID.");
-//         return;
-//     }
+    // Clock Widget
+    clockWidget = new Clock(this);
+    clockWidget->setGeometry(1050, 50, 300, 100);
+    clockWidget->show();
 
-//     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "EditConnection");
-//     db.setHostName("sql12.freesqldatabase.com");
-//     db.setDatabaseName("sql12781050");
-//     db.setUserName("sql12781050");
-//     db.setPassword("nTkylB8LP9");
-//     db.setPort(3306);
+    // Version label
+    QLabel* versionLabel = new QLabel("FW Version: 1.0.0", this);
+    QFont versionFont("Segoe UI", 10);
+    versionFont.setItalic(true);
+    versionLabel->setFont(versionFont);
+    versionLabel->setGeometry(10, screenHeight - 30, 200, 20);
 
-//     if (!db.open()) {
-//         QMessageBox::critical(this, "DB Error", db.lastError().text());
-//         return;
-//     }
+    // Admin Login Button
+    QPushButton* loginButton = new QPushButton("Admin Login", this);
+    loginButton->setGeometry(100, 300, 200, 100);
+    connect(loginButton, &QPushButton::clicked, [this]() {
+        LoginDialog loginDialog(this);
+        if (loginDialog.exec() == QDialog::Accepted && loginDialog.isAuthenticated()) {
+            QMessageBox::information(this, "Success", "Admin logged in!");
+        }
+    });
 
-//     QSqlQuery query(db);
-//     query.prepare("SELECT name, department, salary FROM employees WHERE id = ?");
-//     query.addBindValue(empId);
+    // Add Employee
+    this->setStyleSheet("background-color: black; color: white;");
+    QPushButton* addButton = new QPushButton("Add Employee", this);
+    addButton->setGeometry(1100, 300, 200, 100);
+    connect(addButton, &QPushButton::clicked, []() {
+        auto* form = new AddEmployeeForm(nullptr);
+        form->setAttribute(Qt::WA_DeleteOnClose);
+        form->setModal(true);
+        form->show();
+    });
 
-//     if (!query.exec() || !query.next()) {
-//         QMessageBox::warning(this, "Error", "Employee not found!");
-//         db.close();
-//         return;
-//     }
+    // Edit Employee
+    QPushButton* editButton = new QPushButton("Edit Employee", this);
+    editButton->setGeometry(1100, 400, 200, 100);
+    connect(editButton, &QPushButton::clicked, []() {
+        auto* form = new EditEmployeeForm(nullptr);
+        form->setAttribute(Qt::WA_DeleteOnClose);
+        form->setModal(true);
+        form->show();
+    });
 
-//     nameEdit->setText(query.value(0).toString());
-//     deptEdit->setText(query.value(1).toString());
-//     salaryEdit->setText(query.value(2).toString());
+    // Delete Employee
+    QPushButton* deleteButton = new QPushButton("Delete Employee", this);
+    deleteButton->setGeometry(1100, 500, 200, 100);
+    connect(deleteButton, &QPushButton::clicked, []() {
+        auto* form = new DeleteEmployeeForm(nullptr);
+        form->setAttribute(Qt::WA_DeleteOnClose);
+        form->setModal(true);
+        form->show();
+    });
 
-//     db.close();
-// }
+    // View Employees
+    QPushButton* viewButton = new QPushButton("View Employees", this);
+    viewButton->setGeometry(1100, 600, 200, 100);
+    connect(viewButton, &QPushButton::clicked, []() {
+        QVector<Employee> employeeQVector;
+        for (const auto& e : globalEmployeeList)
+            employeeQVector.append(e);
+        auto* dialog = new EmployeeListDialog(nullptr);
+        dialog->exec();
+    });
 
-// void EditEmployeeForm::updateEmployee()
-// {
-//     QString empId = idEdit->text().trimmed();
-//     QString name = nameEdit->text().trimmed();
-//     QString dept = deptEdit->text().trimmed();
-//     QString salary = salaryEdit->text().trimmed();
+    // Pie Chart Widget
+    pieChartWidget = new PieChartOpenGLWidget(this);
+    int pieChartWidth = 500;
+    int pieChartHeight = 500;
+    int pieChartX = (screenWidth - pieChartWidth) / 2;
+    int pieChartY = (screenHeight - pieChartHeight) / 2;
+    pieChartWidget->setGeometry(pieChartX, pieChartY, pieChartWidth, pieChartHeight);
 
-//     if (empId.isEmpty() || name.isEmpty() || dept.isEmpty() || salary.isEmpty()) {
-//         QMessageBox::warning(this, "Input Error", "All fields must be filled!");
-//         return;
-//     }
+    // Connect to Database
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "MainPieChartConn");
+    db.setHostName("sql12.freesqldatabase.com");
+    db.setDatabaseName("sql12781050");
+    db.setUserName("sql12781050");
+    db.setPassword("nTkylB8LP9");
+    db.setPort(3306);
 
-//     QSqlDatabase db = QSqlDatabase::database("EditConnection");
+    if (db.open()) {
+        QSqlQuery query("SELECT department, COUNT(*) FROM employees GROUP BY department", db);
+        QMap<QString, int> departmentData;
 
-//     if (!db.isOpen() && !db.open()) {
-//         QMessageBox::critical(this, "DB Error", db.lastError().text());
-//         return;
-//     }
+        while (query.next()) {
+            departmentData[query.value(0).toString()] = query.value(1).toInt();
+        }
 
-//     QSqlQuery query(db);
-//     query.prepare("UPDATE employees SET name = ?, department = ?, salary = ? WHERE id = ?");
-//     query.addBindValue(name);
-//     query.addBindValue(dept);
-//     query.addBindValue(salary);
-//     query.addBindValue(empId);
-
-//     if (!query.exec()) {
-//         QMessageBox::critical(this, "Update Failed", query.lastError().text());
-//     } else {
-//         QMessageBox::information(this, "Success", "Employee updated successfully!");
-//         this->close();
-//     }
-
-//     db.close();
-// }
+        pieChartWidget->setDepartmentData(departmentData);
+        db.close();
+    } else {
+        QMessageBox::warning(this, "Database Error", db.lastError().text());
+    }
+}
