@@ -4,6 +4,7 @@
         "qformlayout": "cpp",
         "iostream": "cpp",
         "new": "cpp",
-        "qlabel": "cpp"
+        "qlabel": "cpp",
+        "qopenglfunctions": "cpp"
     }
 }
