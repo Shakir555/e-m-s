@@ -3,6 +3,7 @@
         "qmessagebox": "cpp",
         "qformlayout": "cpp",
         "iostream": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "qlabel": "cpp"
     }
 }
