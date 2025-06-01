@@ -102,17 +102,14 @@ MainWindow::MainWindow(int screenWidth, int screenHeight,
     int pieChartY = (screenHeight - pieChartHeight) / 2;
     pieChartWidget->setGeometry(pieChartX, pieChartY,
                                 pieChartWidth, pieChartHeight);
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "MainPieChartConn");
-    db.setHostName("sql12.freesqldatabase.com");
-    db.setDatabaseName("sql12781050");
-    db.setUserName("sql12781050");
-    db.setPassword("nTkylB8LP9");
-    db.setPort(3306);
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "MainPieChartConn");
+    QString dbPath = QCoreApplication::applicationDirPath() + "/employee.db";
+    db.setDatabaseName(dbPath);
     if (db.open())
     {
         QSqlQuery query("SELECT department, COUNT(*) FROM employees GROUP BY department", db);
         QMap<QString, int> departmentData;
-        while(query.next())
+        while (query.next())
         {
             departmentData[query.value(0).toString()] = query.value(1).toInt();
         }

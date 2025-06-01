@@ -30,24 +30,12 @@ void DeleteEmployeeForm::deleteEmployee()
         QMessageBox::warning(this, "Error", "Please Enter an Employee ID");
         return;
     }
-    else
-    {
-        // employee id is correct
-    }
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "DeleteConnection");
-    db.setHostName("sql12.freesqldatabase.com");
-    db.setDatabaseName("sql12781050");
-    db.setUserName("sql12781050");
-    db.setPassword("nTkylB8LP9");
-    db.setPort(3306);
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "DeleteConnection");
+    db.setDatabaseName("employee.db");
     if (!db.open())
     {
         QMessageBox::critical(this, "DB Error", db.lastError().text());
         return;
-    }
-    else
-    {
-        // db connection success
     }
     QSqlQuery query(db);
     query.prepare("DELETE FROM employees WHERE id = ?");
@@ -62,4 +50,5 @@ void DeleteEmployeeForm::deleteEmployee()
         this->close();
     }
     db.close();
+    QSqlDatabase::removeDatabase("DeleteConnection");
 }

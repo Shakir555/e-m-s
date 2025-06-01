@@ -1,11 +1,12 @@
 QT += core gui widgets sql
 
 TEMPLATE = app
-TARGET = hello_world
+TARGET = qt_ems
 INCLUDEPATH += include
 
 # Source files
 SOURCES += main.cpp \
+           src/database.cpp \
            src/main_window.cpp \
            src/emp_btn.cpp \
            src/add_emp_form.cpp \
@@ -14,10 +15,11 @@ SOURCES += main.cpp \
            src/employeeListDialog.cpp \
            src/piechart.cpp \
            src/login_dialog.cpp \
-           src/clock.cpp
-
+           src/clock.cpp \
+           
 # Header files
-HEADERS += include/main_window.h \
+HEADERS += include/database.h \
+           include/main_window.h \
            include/emp_btn.h \
            include/add_emp_form.h \
            include/edit_emp_form.h \
@@ -26,9 +28,8 @@ HEADERS += include/main_window.h \
            include/emp.h \
            include/piechart.h \
            include/login_dialog.h \
-           include/clock.h \
-           include/gradientStyle.h
-
+           include/clock.h 
+           
 # Output directories for build artifacts
 OBJECTS_DIR = o
 MOC_DIR = moc

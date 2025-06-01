@@ -5,6 +5,8 @@
         "iostream": "cpp",
         "new": "cpp",
         "qlabel": "cpp",
-        "qopenglfunctions": "cpp"
+        "qopenglfunctions": "cpp",
+        "qsqlerror": "cpp",
+        "qdebug": "cpp"
     }
 }

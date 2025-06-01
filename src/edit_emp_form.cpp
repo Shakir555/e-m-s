@@ -4,7 +4,6 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
-#include <QPushButton>
 #include <QVBoxLayout>
 #include "edit_emp_form.h"
 
@@ -40,24 +39,19 @@ void EditEmployeeForm::fetchEmployee()
         QMessageBox::warning(this, "Error", "Please Enter an Employee ID");
         return;
     }
-    else
+    QSqlDatabase db;
+    if (QSqlDatabase::contains("EditConnection")) {
+        db = QSqlDatabase::database("EditConnection");
+    } 
+    else 
     {
-        // Employee ID Detected and Fetch
+        db = QSqlDatabase::addDatabase("QSQLITE", "EditConnection");
+        db.setDatabaseName("employee.db");  
     }
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "EditConnection");
-    db.setHostName("sql12.freesqldatabase.com");
-    db.setDatabaseName("sql12781050");
-    db.setUserName("sql12781050");
-    db.setPassword("nTkylB8LP9");
-    db.setPort(3306);
     if (!db.open())
     {
         QMessageBox::critical(this, "DB Error", db.lastError().text());
         return;
-    }
-    else
-    {
-        // db open Success
     }
     QSqlQuery query(db);
     query.prepare("SELECT name, department, salary FROM employees WHERE id = ?");
@@ -67,10 +61,6 @@ void EditEmployeeForm::fetchEmployee()
         QMessageBox::warning(this, "Error", "Employee not found!");
         db.close();
         return;
-    }
-    else
-    {
-        // employee id found on query
     }
     nameEdit->setText(query.value(0).toString());
     deptEdit->setText(query.value(1).toString());
@@ -89,19 +79,11 @@ void EditEmployeeForm::updateEmployee()
         QMessageBox::warning(this, "Input Error", "All Input must be filled!");
         return;
     }
-    else
-    {
-        // All Input Success to update employee
-    }
     QSqlDatabase db = QSqlDatabase::database("EditConnection");
     if (!db.isOpen() && !db.open())
     {
         QMessageBox::critical(this, "DB Error", db.lastError().text());
         return;
-    }
-    else
-    {
-        // db open success
     }
     QSqlQuery query(db);
     query.prepare("UPDATE employees SET name = ?, department = ?, salary = ? WHERE id = ?");
@@ -109,7 +91,6 @@ void EditEmployeeForm::updateEmployee()
     query.addBindValue(dept);
     query.addBindValue(salary);
     query.addBindValue(empId);
-
     if (!query.exec())
     {
         QMessageBox::critical(this, "Update Failed", query.lastError().text());
@@ -121,4 +102,3 @@ void EditEmployeeForm::updateEmployee()
     }
     db.close();
 }
-

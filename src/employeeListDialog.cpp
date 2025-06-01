@@ -18,24 +18,30 @@ EmployeeListDialog::EmployeeListDialog(QWidget* parent): QDialog(parent)
 
 void EmployeeListDialog::loadEmployeesFromDatabase()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("sql12.freesqldatabase.com");
-    db.setDatabaseName("sql12781050");
-    db.setUserName("sql12781050");
-    db.setPassword("nTkylB8LP9");
-    db.setPort(3306);
-    if (!db.open())
+    QString connectionName = "EmployeeListConn";
+    QSqlDatabase db;
+    if (QSqlDatabase::contains(connectionName)) 
+    {
+        db = QSqlDatabase::database(connectionName);
+    } 
+    else 
+    {
+        db = QSqlDatabase::addDatabase("QSQLITE", connectionName);
+        db.setDatabaseName("employee.db");
+    }
+    if (!db.open()) 
     {
         QMessageBox::critical(this, "DB Error", db.lastError().text());
         return;
     }
-    else
+    QSqlQuery query(db);
+    if (!query.exec("SELECT name, id, department, salary FROM employees")) 
     {
-        QMessageBox::information(this, "DB Success", "DB Success connection");
+        QMessageBox::critical(this, "Query Error", query.lastError().text());
+        return;
     }
-    QSqlQuery query("SELECT name, id, department, salary FROM employees");
     QString employeeData;
-    while(query.next())
+    while(query.next()) 
     {
         employeeData += QString("Name: %1, ID: %2, Dept: %3, Salary: %4\n")
                         .arg(query.value(0).toString())

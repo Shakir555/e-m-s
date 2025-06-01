@@ -19,7 +19,7 @@ AddEmployeeForm::AddEmployeeForm(QWidget* parent) : QDialog(parent)
     idEdit = new QLineEdit(this);
     deptEdit = new QLineEdit(this);
     salaryEdit = new QLineEdit(this);
-    saveBtn = new QPushButton("save", this);
+    saveBtn = new QPushButton("Save", this);
     QFormLayout* formLayout = new QFormLayout;
     formLayout->addRow("Name:", nameEdit);
     formLayout->addRow("ID:", idEdit);
@@ -37,12 +37,8 @@ void AddEmployeeForm::saveEmployee()
     if (nameEdit->text().isEmpty() || idEdit->text().isEmpty() ||
         deptEdit->text().isEmpty() || salaryEdit->text().isEmpty())
     {
-        QMessageBox::warning(this, "Input Error", "All input text must be filled!");
+        QMessageBox::warning(this, "Input Error", "All input fields must be filled!");
         return;
-    }
-    else
-    {
-        QMessageBox::information(this, "Employee Information", "Employee Information filled");
     }
     Employee emp;
     emp.name = nameEdit->text();
@@ -50,22 +46,14 @@ void AddEmployeeForm::saveEmployee()
     emp.department = deptEdit->text();
     emp.salary = salaryEdit->text();
     globalEmployeeList.push_back(emp);
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("sql12.freesqldatabase.com");
-    db.setDatabaseName("sql12781050");
-    db.setUserName("sql12781050");
-    db.setPassword("nTkylB8LP9");
-    db.setPort(3306);
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "AddConnection");
+    db.setDatabaseName("employee.db");
     if (!db.open())
     {
         QMessageBox::critical(this, "DB Connection Failed", db.lastError().text());
         return;
     }
-    else
-    {
-        // connection success
-    }
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("INSERT INTO employees (name, id, department, salary) VALUES (?, ?, ?, ?)");
     query.addBindValue(emp.name);
     query.addBindValue(emp.id);
@@ -80,5 +68,5 @@ void AddEmployeeForm::saveEmployee()
         QMessageBox::information(this, "Success", "Employee inserted into database!");
     }
     db.close();
+    QSqlDatabase::removeDatabase("AddConnection");
 }
-
